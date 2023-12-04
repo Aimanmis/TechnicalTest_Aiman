@@ -1,0 +1,138 @@
+﻿@page
+@model UserManagementApp.Pages.UserManagementModel
+
+
+@if (TempData["NotificationMessage"] != null)
+{
+    <div class="alert alert-dismissible fade show mt-3 @TempData["NotificationClass"]" role="alert">
+        @TempData["NotificationMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<div class="card card-default">
+    <div class="card-header">
+        <h3>Add User Management</h3>
+    </div>
+    <form method="post">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="User.NamaLengkap">Nama Lengkap</label>
+                        <input asp-for="User.NamaLengkap" class="form-control" placeholder="Enter Nama Lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="User.Username">User name</label>
+                        <input asp-for="User.Username" class="form-control" placeholder="Enter User name">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="User.Password">Password</label>
+                        <div class="input-group">
+                            <input asp-for="User.Password" type="password" class="form-control" placeholder="Enter Password" id="passwordInput">
+                            <div class="input-group-append">
+                                <span class="input-group-text" onclick="togglePassword()">
+                                    <i class="far fa-eye" id="eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="User.Status">Status</label>
+                        <select asp-for="User.Status" class="form-control" data-placeholder="Select Status" style="width: 100%;">
+                            <option value="1">Active</option>
+                            <option value="0">Not Active</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+<!-- /.card -->
+
+<hr/>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">User Management Details</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nama Lengkap</th>
+                    <th>User name</th>
+                    <th>Password</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.UserList != null && Model.UserList.Any())
+                {
+                    @foreach (var user in Model.UserList)
+                    {
+                        <tr>
+                            <td>@user.NamaLengkap</td>
+                            <td>@user.Username</td>
+                            <td>@user.Password</td>
+                            <td>
+                                @if (user.Status == '1')
+                                {
+                                    <span class="badge badge-success">Active</span>
+                                }
+                                else if (user.Status == '0')
+                                {
+                                    <span class="badge badge-warning">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">No users available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+@* <hr />
+
+<h2>Existing Users</h2>
+<ul>
+    @if (Model.UserList != null)
+    {
+        @foreach (var user in Model.UserList)
+        {
+            <li>@user.NamaLengkap - @user.Username - @user.Password - @user.Status</li>
+        }
+    }
+</ul> *@
+
+<script>
+    function togglePassword() {
+        var passwordInput = document.getElementById('passwordInput');
+        var eyeIcon = document.getElementById('eye');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('far', 'fa-eye');
+            eyeIcon.classList.add('fas', 'fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fas', 'fa-eye-slash');
+            eyeIcon.classList.add('far', 'fa-eye');
+        }
+    }
+</script>
